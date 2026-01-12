@@ -1,0 +1,22 @@
+# Learn more about configuring your extension at https://shopify.dev/docs/apps/online-store/theme-app-extensions/configuration
+
+api_version = "2025-04"
+
+[[extensions]]
+uid = "770e3d9e-3fe9-98c2-0c3d-fe71ee70a7db5cc97b39"
+type = "theme"
+name = "Chat Bubble"
+handle = "chat-bubble"
+
+[extensions.settings]
+[[extensions.settings.groups]]
+name = "Appearance"
+settings = [
+  { type = "color", id = "chat_bubble_color", label = "Chat Bubble Color", default = "#5046e4" },
+  { type = "text", id = "welcome_message", label = "Welcome Message", default = "👋 Hi there! How can I help you today?" },
+  { type = "select", id = "system_prompt", label = "Assistant Style", options = [
+    { value = "standardAssistant", label = "Standard Assistant" },
+    { value = "enthusiasticAssistant", label = "Enthusiastic Assistant" }
+  ], default = "standardAssistant" }
+]
+

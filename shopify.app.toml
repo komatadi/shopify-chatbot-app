@@ -1,0 +1,31 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+name = "shopify-chatbot-app"
+client_id = "YOUR_CLIENT_ID"
+application_url = "https://your-app-url.com"
+embedded = true
+
+[build]
+include_config_on_deploy = true
+
+[access_scopes]
+# Scopes required for chatbot functionality
+scopes = "unauthenticated_read_product_listings,customer_read_orders,read_products"
+
+[auth]
+redirect_urls = [
+  "https://your-app-url.com/api/auth"
+]
+
+[webhooks]
+api_version = "2025-04"
+
+[pos]
+embedded = false
+
+# App Proxy configuration for theme extension to access chat API
+[app_proxy]
+url = "/apps/chatbot"
+subpath = "chat"
+prefix = "apps"
+
