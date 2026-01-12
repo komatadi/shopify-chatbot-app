@@ -258,10 +258,16 @@ async function handleChatStream(request: Request, shopDomain: string) {
           },
           onMessage: async (message) => {
             // Save final assistant message
-            if (assistantMessage) {
-              await saveMessage(conversation.id, "assistant", assistantMessage);
+            try {
+              if (assistantMessage) {
+                await saveMessage(conversation.id, "assistant", assistantMessage);
+              }
+              // Send done message - send() will handle if stream is closed
+              send(formatSSEMessage("done", { conversationId: conversation.id }));
+            } catch (error) {
+              console.error("Error in onMessage callback:", error);
+              // Don't throw - stream might already be closed
             }
-            send(formatSSEMessage("done", { conversationId: conversation.id }));
           },
         }
       );
