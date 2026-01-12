@@ -175,9 +175,11 @@ async function handleChatStream(request: Request) {
     );
 
     // Initialize MCP client
+    // Pass full shop domain (e.g., "styledgenie-webshop.myshopify.com")
+    // The MCP client needs the full domain to construct API URLs
     const shopDomainForMCP = finalShopId.includes('.myshopify.com') 
-      ? finalShopId.replace(".myshopify.com", "") 
-      : (shopDomain || finalShopId);
+      ? finalShopId // Keep full domain
+      : (shopDomain || finalShopId || `${finalShopId}.myshopify.com`);
     
     // For Storefront API, we need a public access token
     const storefrontAccessToken = ""; // TODO: Get from shop settings or session
