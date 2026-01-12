@@ -91,10 +91,18 @@ export async function action({ request }: ActionFunctionArgs) {
     );
 
     // Initialize MCP client
-    // Note: Storefront access token should be stored per shop
-    // For now, we'll need to create one via Admin API
     // Pass full shop domain (e.g., "styledgenie-webshop.myshopify.com")
-    const storefrontAccessToken = ""; // TODO: Get from shop settings
+    // Get Storefront API access token from settings or environment
+    const storefrontAccessToken = 
+      settings.storefrontAccessToken || 
+      process.env.STOREFRONT_ACCESS_TOKEN || 
+      "";
+    
+    if (!storefrontAccessToken) {
+      console.warn("⚠️  Storefront API access token not configured. Product search will fail.");
+      console.warn("   To fix: Create a Storefront API access token in Shopify Admin and add it to StoreSettings");
+    }
+    
     const mcpClient = new MCPClient(
       shopDomain, // Keep full domain including .myshopify.com
       storefrontAccessToken
@@ -203,7 +211,17 @@ async function handleChatStream(request: Request, shopDomain: string) {
     // Initialize MCP client
     // Pass full shop domain (e.g., "styledgenie-webshop.myshopify.com")
     // The MCP client will use it to construct API URLs
-    const storefrontAccessToken = ""; // TODO: Get from shop settings
+    // Get Storefront API access token from settings or environment
+    const storefrontAccessToken = 
+      settings.storefrontAccessToken || 
+      process.env.STOREFRONT_ACCESS_TOKEN || 
+      "";
+    
+    if (!storefrontAccessToken) {
+      console.warn("⚠️  Storefront API access token not configured. Product search will fail.");
+      console.warn("   To fix: Create a Storefront API access token in Shopify Admin and add it to StoreSettings");
+    }
+    
     const mcpClient = new MCPClient(
       shopDomain, // Keep full domain including .myshopify.com
       storefrontAccessToken

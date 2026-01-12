@@ -76,9 +76,16 @@ export async function action({ request }: ActionFunctionArgs) {
       : (shopDomain || finalShopId || `${finalShopId}.myshopify.com`);
     
     // For Storefront API, we need a public access token
-    // This should be created via Admin API and stored per shop
-    // For now, we'll use an empty token - this needs to be configured per shop
-    const storefrontAccessToken = ""; // TODO: Get from shop settings or session
+    // Get from shop settings or environment variable
+    const storefrontAccessToken = 
+      settings.storefrontAccessToken || 
+      process.env.STOREFRONT_ACCESS_TOKEN || 
+      "";
+    
+    if (!storefrontAccessToken) {
+      console.warn("⚠️  Storefront API access token not configured. Product search will fail.");
+    }
+    
     const mcpClient = new MCPClient(shopDomainForMCP, storefrontAccessToken);
 
     // Get available tools
@@ -182,7 +189,16 @@ async function handleChatStream(request: Request) {
       : (shopDomain || finalShopId || `${finalShopId}.myshopify.com`);
     
     // For Storefront API, we need a public access token
-    const storefrontAccessToken = ""; // TODO: Get from shop settings or session
+    // Get from shop settings or environment variable
+    const storefrontAccessToken = 
+      settings.storefrontAccessToken || 
+      process.env.STOREFRONT_ACCESS_TOKEN || 
+      "";
+    
+    if (!storefrontAccessToken) {
+      console.warn("⚠️  Storefront API access token not configured. Product search will fail.");
+    }
+    
     const mcpClient = new MCPClient(shopDomainForMCP, storefrontAccessToken);
 
     // Get available tools

@@ -107,7 +107,11 @@ export async function getStoreSettings(shopId: string) {
  */
 export async function updateStoreSettings(
   shopId: string,
-  data: { openaiKey?: string; systemPrompt?: string }
+  data: { 
+    openaiKey?: string; 
+    systemPrompt?: string;
+    storefrontAccessToken?: string;
+  }
 ) {
   return await prisma.storeSettings.upsert({
     where: { shopId },

@@ -59,12 +59,13 @@ model Message {
 }
 
 model StoreSettings {
-  id          String   @id @default(cuid())
-  shopId      String   @unique
-  openaiKey   String?
-  systemPrompt String? @default("You are a helpful customer support assistant for a Shopify store. Help customers find products, answer questions about policies and FAQs, and check order status.")
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id                  String   @id @default(cuid())
+  shopId              String   @unique
+  openaiKey           String?
+  storefrontAccessToken String? // Storefront API access token for product search
+  systemPrompt        String? @default("You are a helpful customer support assistant for a Shopify store. Help customers find products, answer questions about policies and FAQs, and check order status.")
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 
   @@index([shopId])
 }
