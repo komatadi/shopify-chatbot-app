@@ -6,9 +6,14 @@
     "node": ">=20.10"
   },
   "scripts": {
-    "build": "react-router build",
-    "dev": "shopify app dev",
+    "build": "node scripts/switch-db.js postgresql && react-router build",
+    "build:dev": "node scripts/switch-db.js sqlite && react-router build",
+    "dev": "node scripts/switch-db.js sqlite && shopify app dev",
     "dev:router": "react-router dev",
+    "db:switch": "node scripts/switch-db.js",
+    "db:sqlite": "node scripts/switch-db.js sqlite",
+    "db:postgresql": "node scripts/switch-db.js postgresql",
+    "postinstall": "node scripts/switch-db.js",
     "config:link": "shopify app config link",
     "generate": "shopify app generate",
     "deploy": "shopify app deploy",
