@@ -93,9 +93,10 @@ export async function action({ request }: ActionFunctionArgs) {
     // Initialize MCP client
     // Note: Storefront access token should be stored per shop
     // For now, we'll need to create one via Admin API
+    // Pass full shop domain (e.g., "styledgenie-webshop.myshopify.com")
     const storefrontAccessToken = ""; // TODO: Get from shop settings
     const mcpClient = new MCPClient(
-      shopDomain.replace(".myshopify.com", ""),
+      shopDomain, // Keep full domain including .myshopify.com
       storefrontAccessToken
     );
 
@@ -200,9 +201,11 @@ async function handleChatStream(request: Request, shopDomain: string) {
     const openaiService = createOpenAIService(openaiKey);
 
     // Initialize MCP client
+    // Pass full shop domain (e.g., "styledgenie-webshop.myshopify.com")
+    // The MCP client will use it to construct API URLs
     const storefrontAccessToken = ""; // TODO: Get from shop settings
     const mcpClient = new MCPClient(
-      shopDomain.replace(".myshopify.com", ""),
+      shopDomain, // Keep full domain including .myshopify.com
       storefrontAccessToken
     );
 

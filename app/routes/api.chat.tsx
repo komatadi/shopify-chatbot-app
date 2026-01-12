@@ -69,10 +69,11 @@ export async function action({ request }: ActionFunctionArgs) {
     );
 
     // Initialize MCP client
-    // Extract shop domain from shopId (format: shop.myshopify.com)
+    // Pass full shop domain (e.g., "styledgenie-webshop.myshopify.com")
+    // The MCP client needs the full domain to construct API URLs
     const shopDomainForMCP = finalShopId.includes('.myshopify.com') 
-      ? finalShopId.replace(".myshopify.com", "") 
-      : (shopDomain || finalShopId);
+      ? finalShopId // Keep full domain
+      : (shopDomain || finalShopId || `${finalShopId}.myshopify.com`);
     
     // For Storefront API, we need a public access token
     // This should be created via Admin API and stored per shop
