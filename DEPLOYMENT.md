@@ -193,33 +193,31 @@ In the Web Service settings, under **"Build & Deploy"**:
 3. **Get Your URL**: Once deployed, you'll get a URL like:
    - `https://your-app-name.onrender.com`
 
-#### Step 6: Run Database Migrations
+#### Step 6: Database Migrations (Automatic!)
 
-After the first deployment, you need to run Prisma migrations:
+**Good news**: Migrations now run automatically! The `start` script has been updated to run migrations before starting the server.
 
-1. **Go to your Web Service** in Render Dashboard
-2. **Click "Shell"** tab (or use "Manual Deploy" → "Run Command")
-3. **Run these commands**:
-   ```bash
-   npx prisma migrate deploy
-   npx prisma generate
-   ```
+**No shell access needed** - migrations run automatically on every deployment/restart.
 
-Alternatively, you can add a **one-off script** in `package.json`:
+**How it works**:
+- The `start` command runs `scripts/migrate-and-start.js`
+- This script runs `npx prisma migrate deploy` before starting the server
+- Migrations are idempotent (safe to run multiple times)
+- If migrations fail, the app still starts (in case migrations are already applied)
 
-```json
-{
-  "scripts": {
-    "postdeploy": "npx prisma migrate deploy && npx prisma generate"
-  }
-}
-```
+**Manual migration (if needed)**:
+If you need to run migrations manually without shell access, you can:
 
-Or create a **separate Background Worker** in Render:
-1. **New +** → **"Background Worker"**
-2. **Connect same repository**
-3. **Start Command**: `npx prisma migrate deploy && npx prisma generate`
-4. **Run once** then you can delete it
+1. **Temporarily change Start Command** in Render Dashboard:
+   - Go to your Web Service → Settings
+   - Change Start Command to: `npx prisma migrate deploy && npm start`
+   - Save (this will trigger a redeploy)
+   - After it runs, change it back to: `npm start`
+
+2. **Or use Render's "Run Command" feature** (if available):
+   - Go to your Web Service → Manual Deploy
+   - Look for "Run Command" option
+   - Run: `npx prisma migrate deploy`
 
 #### Step 7: Update Environment Variables with Actual URL
 

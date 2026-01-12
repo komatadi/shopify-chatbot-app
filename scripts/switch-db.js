@@ -22,10 +22,19 @@ let provider = process.argv[2];
 if (!provider) {
   // Auto-detect from DATABASE_URL
   const dbUrl = process.env.DATABASE_URL || '';
-  if (dbUrl.startsWith('postgresql://') || dbUrl.startsWith('postgres://')) {
+  // Check for PostgreSQL URLs (including Render's internal database URLs)
+  if (dbUrl.startsWith('postgresql://') || 
+      dbUrl.startsWith('postgres://') ||
+      dbUrl.includes('postgres') ||
+      // Render's internal database URLs might not have protocol
+      (dbUrl.includes('render.com') && !dbUrl.startsWith('file:'))) {
     provider = 'postgresql';
+  } else if (dbUrl.startsWith('file:')) {
+    provider = 'sqlite';
   } else {
-    provider = 'sqlite'; // Default to SQLite for local dev
+    // Default: if DATABASE_URL is set but doesn't match above, assume PostgreSQL for production
+    // This handles cases where DATABASE_URL might be set but format is different
+    provider = dbUrl ? 'postgresql' : 'sqlite';
   }
 }
 

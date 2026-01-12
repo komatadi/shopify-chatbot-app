@@ -6,7 +6,7 @@
     "node": ">=20.10"
   },
   "scripts": {
-    "build": "node scripts/switch-db.js postgresql && react-router build",
+    "build": "node scripts/switch-db.js postgresql && npx prisma generate && react-router build",
     "build:dev": "node scripts/switch-db.js sqlite && react-router build",
     "dev": "node scripts/switch-db.js sqlite && shopify app dev",
     "dev:router": "react-router dev",
@@ -17,7 +17,8 @@
     "config:link": "shopify app config link",
     "generate": "shopify app generate",
     "deploy": "shopify app deploy",
-    "start": "react-router-serve ./build/server/index.js",
+    "start": "node scripts/migrate-and-start.js",
+    "start:server": "react-router-serve ./build/server/index.js",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "typecheck": "react-router typegen && tsc --noEmit"
   },
