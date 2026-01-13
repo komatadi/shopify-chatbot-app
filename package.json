@@ -9,7 +9,7 @@
     "build": "node scripts/switch-db.js postgresql && npx prisma generate && react-router build",
     "build:dev": "node scripts/switch-db.js sqlite && react-router build",
     "dev": "node scripts/switch-db.js sqlite && shopify app dev",
-    "dev:router": "react-router dev",
+    "dev:router": "node scripts/switch-db.js sqlite && react-router dev",
     "db:switch": "node scripts/switch-db.js",
     "db:sqlite": "node scripts/switch-db.js sqlite",
     "db:postgresql": "node scripts/switch-db.js postgresql",

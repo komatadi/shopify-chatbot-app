@@ -16,6 +16,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const rootDir = join(__dirname, '..');
 const schemaPath = join(rootDir, 'prisma', 'schema.prisma');
+const migrationLockPath = join(rootDir, 'prisma', 'migrations', 'migration_lock.toml');
 
 // Determine provider: from argument, or auto-detect from DATABASE_URL
 let provider = process.argv[2];
@@ -56,6 +57,20 @@ try {
     
     writeFileSync(schemaPath, schema, 'utf-8');
     console.log(`✅ Switched Prisma schema from ${currentProvider} to ${provider}`);
+    
+    // Also update migration_lock.toml if it exists
+    try {
+      let migrationLock = readFileSync(migrationLockPath, 'utf-8');
+      migrationLock = migrationLock.replace(
+        /provider\s*=\s*["']?(sqlite|postgresql)["']?/,
+        `provider = "${provider}"`
+      );
+      writeFileSync(migrationLockPath, migrationLock, 'utf-8');
+      console.log(`✅ Updated migration_lock.toml to ${provider}`);
+    } catch (error) {
+      // migration_lock.toml might not exist yet, that's okay
+      console.log(`ℹ️  migration_lock.toml not found or couldn't be updated (this is okay)`);
+    }
     
     // Regenerate Prisma client (optional - user can run manually if needed)
     try {

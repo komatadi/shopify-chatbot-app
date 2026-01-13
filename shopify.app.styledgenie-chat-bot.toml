@@ -2,8 +2,13 @@
 
 client_id = "3be4259ba08f2c961a3231a267af1fee"
 name = "styledgenie-chat-bot"
-# Production URL (Render)
-application_url = "https://shopify-chatbot-app-ok2j.onrender.com"
+
+# URL Configuration:
+# - Production: Use Render URL (https://shopify-chatbot-app-ok2j.onrender.com)
+# - Local Dev with Ngrok: Replace with your ngrok URL (e.g., https://abc123.ngrok.io)
+#   Get ngrok URL by running: ngrok http 5173
+#   Note: Free ngrok URLs change each restart - update this file each time
+application_url = "https://ernie-unfugal-uninformatively.ngrok-free.dev"
 embedded = true
 
 [build]
@@ -17,7 +22,9 @@ api_version = "2026-01"
 scopes = "customer_read_orders,read_products,unauthenticated_read_product_listings"
 
 [auth]
-redirect_urls = [ "https://shopify-chatbot-app-ok2j.onrender.com/api/auth" ]
+# For local dev with ngrok: Replace with your ngrok URL + /api/auth
+# Example: "https://abc123.ngrok.io/api/auth"
+redirect_urls = [ "https://ernie-unfugal-uninformatively.ngrok-free.dev/api/auth" ]
 
 # App Proxy configuration for theme extension to access chat API
 # Storefront URL: https://store.myshopify.com/apps/chatbot-chat

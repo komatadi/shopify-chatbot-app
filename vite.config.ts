@@ -8,6 +8,14 @@ export default defineConfig({
     port: 5173,
     strictPort: true,
     host: true, // Allow external connections for proxy
+    // Allow ngrok and other tunnel hosts for local development
+    allowedHosts: [
+      '.ngrok.io',
+      '.ngrok-free.dev',
+      '.ngrok.app',
+      'localhost',
+      '127.0.0.1',
+    ],
   },
   // Remove SSR config - let React Router handle it
   // The package should work fine in SSR context
